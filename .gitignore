@@ -4,4 +4,4 @@ node_modules/
 build/
 *.tar
 log.txt
-
+secret.txt
