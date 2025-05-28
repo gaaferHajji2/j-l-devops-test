@@ -4,6 +4,7 @@ USER app
 WORKDIR /app
 COPY package*.json .
 RUN npm i
+RUN ["mkdir", "data"]
 COPY . .
 ENV API_URL=https://jafar.loka.com/
 EXPOSE 3000
