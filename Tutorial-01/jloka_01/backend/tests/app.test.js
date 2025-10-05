@@ -5,7 +5,7 @@ const db = require("../db");
 const Movie = require("../models/movie");
 
 const request = supertest(app);
-const endpoint = "/api/movies";
+const endpoint = "/api/movies"
 
 describe(endpoint, () => {
   beforeAll(async () => {
