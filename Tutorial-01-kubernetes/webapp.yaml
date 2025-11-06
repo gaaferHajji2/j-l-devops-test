@@ -31,6 +31,24 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+      env:
+        - name: USERNAME
+          valueFrom: 
+            # In this way we ref from secret
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-user
+        - name: USER_PWD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-password
+        - name: DB_URL
+          valueFrom:
+            # In this way we ref from map
+            configMapKeyRef:
+              name: mongo-config
+              key: mongo-url
 ---
 apiVersion: v1
 kind: Service
