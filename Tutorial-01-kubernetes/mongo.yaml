@@ -1,18 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: mongo-deployment
+  # For deployment labels are optional
   labels:
-    app: nginx
+    app: mongo
 spec:
-  replicas: 3
+  replicas: 1
   selector:
+    # All pods that have the same label are belong to this deployment
     matchLabels:
-      app: nginx
+      app: mongo
+  # this is pod template the has label: mongo
   template:
     metadata:
+      # for pod the labels are required
       labels:
-        app: nginx
+        app: mongo
     spec:
       containers:
       # this will create pods with mongo:latest image
@@ -27,3 +31,16 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # To remember only: this is the name of service that match the mongo-config
+  name: mongo-service
+spec:
+  selector:
+    app.kubernetes.io/name: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
