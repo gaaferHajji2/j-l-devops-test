@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  # For deployment labels are optional
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    # All pods that have the same label are belong to this deployment
+    matchLabels:
+      app: webapp
+  # this is pod template the has label: mongo
+  template:
+    metadata:
+      # for pod the labels are required
+      labels:
+        app: webapp
+    spec:
+      containers:
+      # this will create pods with mongo:latest image
+      - name: webapp
+        image: nanajanashia/k8s-demo-app:v1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # To remember only: this is the name of service that match the mongo-config
+  name: webapp-service
+spec:
+  selector:
+    app.kubernetes.io/name: webapp
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
