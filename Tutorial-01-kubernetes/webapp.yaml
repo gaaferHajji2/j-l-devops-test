@@ -30,33 +30,36 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
-      env:
-        - name: USERNAME
-          valueFrom: 
-            # In this way we ref from secret
-            secretKeyRef:
-              name: mongo-secret
-              key: mongo-user
-        - name: USER_PWD
-          valueFrom:
-            secretKeyRef:
-              name: mongo-secret
-              key: mongo-password
-        - name: DB_URL
-          valueFrom:
-            # In this way we ref from map
-            configMapKeyRef:
-              name: mongo-config
-              key: mongo-url
+        env:
+          - name: USERNAME
+            valueFrom: 
+              # In this way we ref from secret
+              secretKeyRef:
+                name: mongo-secret
+                key: mongo-user
+          - name: USER_PWD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: mongo-password
+          - name: DB_URL
+            valueFrom:
+              # In this way we ref from map
+              configMapKeyRef:
+                name: mongo-config
+                key: mongo-url
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: webapp-service
 spec:
+  type: NodePort # in this way we make this service external service, 
+  # so we can reach to it from external host
   selector:
     app.kubernetes.io/name: webapp
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
+      nodePort: 30100
