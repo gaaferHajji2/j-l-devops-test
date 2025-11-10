@@ -23,8 +23,7 @@ spec:
         image: nanajanashia/k8s-demo-app:v1.0
         ports:
         - containerPort: 3000
-        resources:
-          resources: # this from qwen.ai
+        resources: # this is from qwen.ai
           requests:
             memory: "256Mi"
             cpu: "100m"
