@@ -1,0 +1,42 @@
+pipeline { 
+agent any 
+environment { 
+NEW_VERSION = '1.3.0' 
+} 
+parameters { 
+string(name: 'jloka01', defaultValue: 'JLoka-01', description: 'simple parameter-01') 
+choice(name: 'jloka02', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'simple parameter-02') 
+booleanParam(name: 'jloka03', defaultValue: true, description: 'simple parameter-03') 
+} 
+stages { 
+stage("build") { 
+steps { 
+echo 'building the application...' 
+echo "building version ${NEW_VERSION}" 
+echo "The jloka_01 is: ${params.jloka01}" 
+echo "The jloka_02 is: ${params.jloka02}" 
+echo "The jloka_03 is: ${params.jloka03}" 
+} 
+} 
+stage("test") { 
+when { 
+expression { 
+BRANCH_NAME == 'dev' || BRANCH_NAME == 'master' 
+} 
+} 
+steps { 
+echo 'testing the application...' 
+} 
+} 
+stage("deploy") { 
+steps { 
+echo 'deploying the application...' 
+// withCredentials([usernamePassword(credentialsId: 'JLoka', usernameVariable: 'MY_USERNAME', 
+passwordVariable: 'MY_PASSWORD')]) { 
+//   sh 'echo "Username: $MY_USERNAME"' 
+//   sh 'echo "Password: $MY_PASSWORD"' 
+// } 
+} 
+} 
+} 
+}
